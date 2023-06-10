@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import math
 
-from src.visualize import draw_dot
+from graphviz import Digraph
+from src.nanograd.value_interface import ValueInterface
+
+from src.nanograd.visualize import draw_dot
 
 
-class Value:
+class Value(ValueInterface):
     activations = {
         'linear': lambda x: x,
         'tanh': lambda x: x.tanh(),
@@ -14,7 +17,7 @@ class Value:
         'log': lambda x: x.log(),
     }
 
-    def __init__(self, data: float | int, _children: tuple[Value]=(), _op: str='', label: str=''):
+    def __init__(self, data: float | int, _children: tuple[Value or ()]=(), _op: str='', label: str=''):
         self.data = data
         self.grad = .0
         self._backward = lambda: None
@@ -136,5 +139,5 @@ class Value:
         for node in reversed(topo):
             node._backward()
     
-    def visualize(self) -> None:
+    def visualize(self) -> Digraph:
         return draw_dot(self)

@@ -1,6 +1,6 @@
 import math
 import random
-from src.value import Value
+from src.nanograd.value import Value
 
 
 class Neuron:
@@ -9,7 +9,7 @@ class Neuron:
         self.neuron_idx = neuron_idx
 
         weights_init = None
-        match kwargs.get("initilization", "uniform"):
+        match kwargs.get("initilization", "normal"):
             case "uniform":
                 weights_init = lambda: random.uniform(-1.0, 1.0)
             case "normal":
@@ -40,6 +40,9 @@ class Neuron:
         act = sum((self.w[feature_num] * (x[feature_num] if isinstance(x[feature_num], Value) else Value(x[feature_num], label=f"e{example_idx}x{feature_num}")) for feature_num in range(len(x))), self.b) 
         out = Value.activations[activation_fn](act)
         return out
+    
+    def forward(self, x: list[float | int | Value], example_idx: int, activation_fn: str = 'linear') -> Value:
+        return self(x, example_idx, activation_fn)
 
     def parameters(self) -> list[Value]:
         return self.w + [self.b]
@@ -48,11 +51,14 @@ class Layer:
     def __init__(self, num_inputs: int, num_neurons: int, layer_idx: int, activation_fn: str = 'linear', **kwargs):
         self.activation_fn = activation_fn
         self.layer_idx = layer_idx
-        self.neurons = [Neuron(num_inputs, layer_idx, neuron_idx, kwargs) for neuron_idx in range(num_neurons)]
+        self.neurons = [Neuron(num_inputs, layer_idx, neuron_idx, *kwargs) for neuron_idx in range(num_neurons)]
     
     def __call__(self, x: list[float | int | Value], example_idx: int) -> list[Value]:
         outs = [neuron(x, example_idx, self.activation_fn) for neuron in self.neurons]
         return outs[0] if len(outs) == 1 else outs
+
+    def forward(self, x: list[float | int | Value], example_idx: int) -> list[Value]:
+        return self(x, example_idx)
     
     def parameters(self) -> list[Value]:
         return [neuron_param for neuron in self.neurons for neuron_param in neuron.parameters()]
@@ -60,16 +66,19 @@ class Layer:
 class MLP:
     def __init__(self, num_inputs: int, layer_sizes: list[int], activation_fn: str | list[str] = 'linear', **kwargs):
         if isinstance(activation_fn, str):
-            activation_fn = [activation_fn] * (len(layer_sizes) - 1)
+            activation_fn = [activation_fn] * len(layer_sizes)
         
         assert len(layer_sizes) == len(activation_fn), f"Number of layers must be equal to number of activation functions, got {len(layer_sizes)} layers and {len(activation_fn)} activation functions"
         all_layers = [num_inputs] + layer_sizes
-        self.layers = [Layer(all_layers[layer_idx], all_layers[layer_idx + 1], layer_idx, activation_fn[layer_idx], kwargs) for layer_idx in range(len(layer_sizes))]
+        self.layers = [Layer(all_layers[layer_idx], all_layers[layer_idx + 1], layer_idx, activation_fn[layer_idx], *kwargs) for layer_idx in range(len(layer_sizes))]
 
     def __call__(self, x: list[float | int | Value], example_num: int) -> list[Value]:
         for layer in self.layers:
             x = layer(x, example_num)
         return x
+
+    def forward(self, x: list[float | int | Value], example_num: int) -> list[Value]:
+        return self(x, example_num)
     
     def parameters(self) -> list[Value]:
         return [layer_params for layer in self.layers for layer_params in layer.parameters()]

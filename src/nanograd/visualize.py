@@ -1,7 +1,8 @@
 from graphviz import Digraph
-from src.value import Value
 
-def trace(root: Value) -> tuple[set[Value], set[tuple[Value, Value]]]:
+from src.nanograd.value_interface import ValueInterface
+
+def trace(root: ValueInterface) -> tuple[set[ValueInterface], set[tuple[ValueInterface, ValueInterface]]]:
     nodes, edges = set(), set()
     def build(v):
         if v not in nodes:
@@ -12,7 +13,7 @@ def trace(root: Value) -> tuple[set[Value], set[tuple[Value, Value]]]:
     build(root)
     return nodes, edges
 
-def draw_dot(root: Value, format: str='svg', rankdir: str='LR') -> Digraph:
+def draw_dot(root: ValueInterface, format: str='svg', rankdir: str='LR') -> Digraph:
     """
     format: png | svg | ...
     rankdir: TB (top to bottom graph) | LR (left to right)
