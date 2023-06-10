@@ -9,6 +9,9 @@ class Value:
     activations = {
         'linear': lambda x: x,
         'tanh': lambda x: x.tanh(),
+        'relu': lambda x: x.relu(),
+        'sigmoid': lambda x: x.sigmoid(),
+        'log': lambda x: x.log(),
     }
 
     def __init__(self, data: float | int, _children: tuple[Value]=(), _op: str='', label: str=''):
@@ -86,6 +89,34 @@ class Value:
 
         def _backward():
             self.grad += out.data * out.grad
+        out._backward = _backward
+
+        return out
+
+    def relu(self) -> Value:
+        out = Value(max(0, self.data), (self,), 'relu')
+
+        def _backward():
+            self.grad += (self.data > 0) * out.grad
+        out._backward = _backward
+
+        return out
+    
+    def sigmoid(self) -> Value:
+        out = Value(1 / (1 + math.exp(-self.data)), (self,), 'sigmoid')
+
+        def _backward():
+            self.grad += (1 - out.data) * out.data * out.grad
+        out._backward = _backward
+
+        return out
+
+    def log(self) -> Value:
+        assert self.data > 0, "Logarithm of negative number is undefined"
+        out = Value(math.log(self.data), (self,), 'log')
+
+        def _backward():
+            self.grad += (1 / self.data) * out.grad
         out._backward = _backward
 
         return out

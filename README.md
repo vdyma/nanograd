@@ -8,9 +8,9 @@ Key features of nanoGrad:
 * Reverse mode autodifferentiation engine for efficient backpropagation.
 * Training and optimization of multilayer perceptron (MLP) models.
 * Intuitive framework with a simple visualization of the computation graph.
+* Implements popular weights initialization functions such as uniform, normal, constant, xavier uniform, xavrier normal and normal truncated.
+* Implements popular activation functions such as tanh, exponent, ReLU, sigmoid and logarithm.
 
 TODO:
 * Add tests
-* Cleanup code
 * Add setup instructions
-* Add more activation functions (log, sigmoid, relu)
