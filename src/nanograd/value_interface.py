@@ -3,6 +3,7 @@
 
 from abc import ABC, abstractmethod
 
+
 class ValueInterface(ABC):
     @abstractmethod
     def __init__(self, data, grad=0, _prev=None, _op=None, label=None):

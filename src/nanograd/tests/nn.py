@@ -6,6 +6,7 @@ import unittest
 from src.nanograd.nn import Neuron, Layer, MLP
 from src.nanograd.value import Value
 
+
 class TestNeuron(unittest.TestCase):
     def test_init(self):
         Neuron(2, 0, 0, initialization="normal")
@@ -19,6 +20,7 @@ class TestNeuron(unittest.TestCase):
         self.assertEqual(len(x.w), 2)
         self.assertIsInstance(x.b, Value)
 
+
 class TestLayer(unittest.TestCase):
     def test_init(self):
         x = Layer(2, 3, 0, "relu")
@@ -30,6 +32,7 @@ class TestLayer(unittest.TestCase):
         x = Layer(2, 3, 0)
         x.forward([1, 1], 0)
 
+
 class TestMLP(unittest.TestCase):
     def test_init(self):
         x = MLP(2, [3, 4], ["relu", "sigmoid"])
@@ -39,5 +42,6 @@ class TestMLP(unittest.TestCase):
         x = MLP(2, [3, 4])
         x.forward([1, 1], 0)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

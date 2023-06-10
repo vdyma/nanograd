@@ -5,6 +5,7 @@ import unittest
 
 from src.nanograd.value import Value
 
+
 class TestValue(unittest.TestCase):
     def test_init(self):
         x = Value(2, (), "-", "x")
@@ -61,14 +62,14 @@ class TestValue(unittest.TestCase):
 
     def test_pow_pos(self):
         x = Value(2)
-        y = x ** 3
+        y = x**3
         y.backward()
         self.assertEqual(y.data, 8)
         self.assertEqual(x.grad, 12)
 
     def test_pow_neg(self):
         x = Value(2)
-        y = x ** -3
+        y = x**-3
         y.backward()
         expected_data = 0.125
         expected_gradient = -0.187
@@ -77,7 +78,7 @@ class TestValue(unittest.TestCase):
 
     def test_pow_zero(self):
         x = Value(2)
-        y = x ** 0
+        y = x**0
         y.backward()
         self.assertEqual(y.data, 1)
         self.assertEqual(x.grad, 0)
@@ -142,7 +143,6 @@ class TestValue(unittest.TestCase):
         self.assertAlmostEqual(expected_data, y.data, 2)
         self.assertAlmostEqual(expected_gradient, x.grad, 2)
 
-
     def test_relu_pos(self):
         x = Value(2)
         y = x.relu()
@@ -205,5 +205,6 @@ class TestValue(unittest.TestCase):
         self.assertAlmostEqual(expected_data, y.data, 2)
         self.assertAlmostEqual(expected_gradeint, x.grad, 2)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
