@@ -21,3 +21,8 @@ dependencies = [
     "numpy",
     "graphviz",
 ]
+[project.optional-dependencies]
+dev = [
+    "jupyterlab",
+    "mkdocs"
+]
