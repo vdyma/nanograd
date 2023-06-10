@@ -1,1 +1,0 @@
-source nanograd/bin/activate

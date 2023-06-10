@@ -11,6 +11,17 @@ Key features of nanoGrad:
 * Implements popular weights initialization functions such as uniform, normal, constant, xavier uniform, xavrier normal and normal truncated.
 * Implements popular activation functions such as tanh, exponent, ReLU, sigmoid and logarithm.
 
+## Usage
+Install requirements:
+```
+pip install -r ./requirements.txt
+```
+Alternatively, you can use `pipenv` for environment management:
+```
+pipenv install
+```
+
+## Other
 TODO:
 * Add tests
 * Add setup instructions
