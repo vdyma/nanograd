@@ -12,7 +12,11 @@ Key features of nanoGrad:
 * Implements popular activation functions such as tanh, exponent, ReLU, sigmoid and logarithm.
 
 ## Usage
-Install requirements:
+You can go throuhg short Jupyter Notebbok `docs/example.ipynb` that covers basic usage.
+
+To run examples, you must install [Graphviz](https://graphviz.org/download/) - open source graph visualization software.
+
+After that install requirements:
 ```
 pip install -r ./requirements.txt
 ```
@@ -21,7 +25,8 @@ Alternatively, you can use `pipenv` for environment management:
 pipenv install
 ```
 
-## Other
-TODO:
-* Add tests
-* Add setup instructions
+Run Jupyter with and that's it!
+```
+jupyter-lab
+```
+Now you're ready to explore nanoGrad!
