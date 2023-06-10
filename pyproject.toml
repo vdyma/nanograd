@@ -18,7 +18,6 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-    "numpy",
     "graphviz",
 ]
 [project.optional-dependencies]

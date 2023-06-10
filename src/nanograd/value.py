@@ -6,6 +6,11 @@ from src.visualize import draw_dot
 
 
 class Value:
+    activations = {
+        'linear': lambda x: x,
+        'tanh': lambda x: x.tanh(),
+    }
+
     def __init__(self, data: float | int, _children: tuple[Value]=(), _op: str='', label: str=''):
         self.data = data
         self.grad = .0
