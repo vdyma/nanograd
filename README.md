@@ -1,10 +1,16 @@
-# nanoGrad
+# nanoGrad: Extremely simple autograd engine
+## Overview
+nanoGrad is a reverse automatic differentiation system. Conceptually, nanoGrad records a graph recording all of the operations that created the data as you execute operations, giving you a directed acyclic graph whose leaves are the input values and root is the output value. By tracing this graph from root to leaves, you can automatically compute the gradient using the chain rule.
 
-nanoGrad is an autograd engine implemented as a follow-along project based on [Andrej Karpathy lecure](https://www.youtube.com/watch?v=VMj-3S1tku0). The only difference so far is that mine implementation is type annotated :P
+Inspired by Andrej Karpathy's lecture on deep learning, this project has evolved into a comprehensive solution that simplifies training multilayer perceptron (MLP) models while offering a simple visualization of the computation graph.
 
-## TODO:
+Key features of nanoGrad:
+* Reverse mode autodifferentiation engine for efficient backpropagation.
+* Training and optimization of multilayer perceptron (MLP) models.
+* Intuitive framework with a simple visualization of the computation graph.
+
+TODO:
 * Add tests
-* Improve README
 * Cleanup code
-* Add more activation functions
-* Add more TODOs
+* Add setup instructions
+* Add more activation functions (log, sigmoid, relu)
