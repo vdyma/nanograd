@@ -6,9 +6,9 @@ from abc import ABC, abstractmethod
 
 class ValueInterface(ABC):
     @abstractmethod
-    def __init__(self, data, grad=0, _prev=None, _op=None, label=None):
+    def __init__(self, data, grad=0, _children=[], _op="", label=""):
         self.data = data
         self.grad = grad
-        self._prev = _prev or []
-        self._op = _op
+        self.children = _children or []
+        self.operation = _op
         self.label = label

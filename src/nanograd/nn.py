@@ -48,7 +48,7 @@ class Neuron:
 
     def __call__(
         self,
-        x: list[float | int | Value],
+        x: list[Value],
         example_idx: int,
         activation_fn: str = "linear",
     ) -> Value:
@@ -72,7 +72,7 @@ class Neuron:
 
     def forward(
         self,
-        x: list[float | int | Value],
+        x: list[Value],
         example_idx: int,
         activation_fn: str = "linear",
     ) -> Value:
@@ -98,11 +98,11 @@ class Layer:
             for neuron_idx in range(num_neurons)
         ]
 
-    def __call__(self, x: list[float | int | Value], example_idx: int) -> list[Value]:
+    def __call__(self, x: list[Value], example_idx: int) -> list[Value]:
         outs = [neuron(x, example_idx, self.activation_fn) for neuron in self.neurons]
-        return outs[0] if len(outs) == 1 else outs
+        return outs
 
-    def forward(self, x: list[float | int | Value], example_idx: int) -> list[Value]:
+    def forward(self, x: list[Value], example_idx: int) -> list[Value]:
         return self(x, example_idx)
 
     def parameters(self) -> list[Value]:
@@ -139,12 +139,13 @@ class MLP:
             for layer_idx in range(len(layer_sizes))
         ]
 
-    def __call__(self, x: list[float | int | Value], example_num: int) -> list[Value]:
+    def __call__(self, x: list[Value], example_num: int) -> list[Value]:
+        out = x
         for layer in self.layers:
-            x = layer(x, example_num)
-        return x
+            out = layer(out, example_num)
+        return out
 
-    def forward(self, x: list[float | int | Value], example_num: int) -> list[Value]:
+    def forward(self, x: list[Value], example_num: int) -> list[Value]:
         return self(x, example_num)
 
     def parameters(self) -> list[Value]:

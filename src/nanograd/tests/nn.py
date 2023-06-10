@@ -12,8 +12,9 @@ class TestNeuron(unittest.TestCase):
         Neuron(2, 0, 0, initialization="normal")
 
     def test_forward(self):
+        data = [Value(1), Value(1)]
         x = Neuron(2, 0, 0)
-        x.forward([1, 1], 0)
+        x.forward(data, 0)
 
     def test_weights(self):
         x = Neuron(2, 0, 0)
@@ -29,8 +30,9 @@ class TestLayer(unittest.TestCase):
         self.assertEqual(x.layer_idx, 0)
 
     def test_forward(self):
+        data = [Value(1), Value(1)]
         x = Layer(2, 3, 0)
-        x.forward([1, 1], 0)
+        x.forward(data, 0)
 
 
 class TestMLP(unittest.TestCase):
@@ -39,8 +41,9 @@ class TestMLP(unittest.TestCase):
         self.assertEqual(len(x.layers), 2)
 
     def test_forward(self):
+        data = [Value(1), Value(1)]
         x = MLP(2, [3, 4])
-        x.forward([1, 1], 0)
+        x.forward(data, 0)
 
 
 if __name__ == "__main__":

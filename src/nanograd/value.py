@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import math
 
-from graphviz import Digraph
-from src.nanograd.value_interface import ValueInterface
+from matplotlib import figure
 
-from src.nanograd.visualize import draw_dot
+from src.nanograd.value_interface import ValueInterface
+from src.nanograd.visualize import draw_networkx
 
 
 class Value(ValueInterface):
@@ -19,16 +19,18 @@ class Value(ValueInterface):
 
     def __init__(
         self,
-        data: float | int,
-        _children: tuple[Value or ()] = (),
+        data: float | int | Value,
+        _children: list[Value] = [],
         _op: str = "",
         label: str = "",
     ):
+        if isinstance(data, Value):
+            return data
         self.data = data
         self.grad = 0.0
         self._backward = lambda: None
-        self._prev = set(_children)
-        self._op = _op
+        self.children = set(_children)
+        self.operation = _op
         self.label = label
 
     def __repr__(self: Value) -> str:
@@ -39,7 +41,7 @@ class Value(ValueInterface):
 
     def __add__(self, other: Value | float | int) -> Value:
         other = other if isinstance(other, Value) else Value(other)
-        out = Value(self.data + other.data, (self, other), "+")
+        out = Value(self.data + other.data, [self, other], "+")
 
         def _backward():
             self.grad += 1.0 * out.grad
@@ -59,7 +61,7 @@ class Value(ValueInterface):
 
     def __mul__(self, other: Value | float | int) -> Value:
         other = other if isinstance(other, Value) else Value(other)
-        out = Value(self.data * other.data, (self, other), "*")
+        out = Value(self.data * other.data, [self, other], "*")
 
         def _backward():
             self.grad += other.data * out.grad
@@ -77,7 +79,13 @@ class Value(ValueInterface):
 
     def __pow__(self, other: Value | float | int) -> Value:
         assert isinstance(other, (float, int)), "Exponent must be a scalar"
-        out = Value(self.data**other, (self,), f"**{other}")
+        out = Value(
+            self.data**other,
+            [
+                self,
+            ],
+            f"**{other}",
+        )
 
         def _backward():
             self.grad += other * (self.data ** (other - 1)) * out.grad
@@ -89,7 +97,13 @@ class Value(ValueInterface):
     def tanh(self) -> Value:
         x = self.data
         t = (math.exp(2 * x) - 1) / (math.exp(2 * x) + 1)
-        out = Value(t, (self,), "tanh")
+        out = Value(
+            t,
+            [
+                self,
+            ],
+            "tanh",
+        )
 
         def _backward():
             self.grad += (1 - t**2) * out.grad
@@ -98,7 +112,13 @@ class Value(ValueInterface):
         return out
 
     def exp(self) -> Value:
-        out = Value(math.exp(self.data), (self,), "exp")
+        out = Value(
+            math.exp(self.data),
+            [
+                self,
+            ],
+            "exp",
+        )
 
         def _backward():
             self.grad += out.data * out.grad
@@ -108,7 +128,13 @@ class Value(ValueInterface):
         return out
 
     def relu(self) -> Value:
-        out = Value(max(0, self.data), (self,), "relu")
+        out = Value(
+            max(0, self.data),
+            [
+                self,
+            ],
+            "relu",
+        )
 
         def _backward():
             self.grad += (self.data > 0) * out.grad
@@ -118,7 +144,13 @@ class Value(ValueInterface):
         return out
 
     def sigmoid(self) -> Value:
-        out = Value(1 / (1 + math.exp(-self.data)), (self,), "sigmoid")
+        out = Value(
+            1 / (1 + math.exp(-self.data)),
+            [
+                self,
+            ],
+            "sigmoid",
+        )
 
         def _backward():
             self.grad += (1 - out.data) * out.data * out.grad
@@ -129,7 +161,13 @@ class Value(ValueInterface):
 
     def log(self) -> Value:
         assert self.data > 0, "Logarithm of negative number is undefined"
-        out = Value(math.log(self.data), (self,), "log")
+        out = Value(
+            math.log(self.data),
+            [
+                self,
+            ],
+            "log",
+        )
 
         def _backward():
             self.grad += (1 / self.data) * out.grad
@@ -145,7 +183,7 @@ class Value(ValueInterface):
         def build_topo(v):
             if v not in visited:
                 visited.add(v)
-                for child in v._prev:
+                for child in v.children:
                     build_topo(child)
                 topo.append(v)
 
@@ -155,5 +193,5 @@ class Value(ValueInterface):
         for node in reversed(topo):
             node._backward()
 
-    def visualize(self) -> Digraph:
-        return draw_dot(self)
+    def visualize(self, name: str = "") -> figure.Figure:
+        return draw_networkx(self, name)
