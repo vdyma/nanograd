@@ -14,7 +14,7 @@ Key features of nanoGrad:
 ## Usage
 You can go throuhg short Jupyter Notebbok `docs/example.ipynb` that covers basic usage.
 
-To run examples, you must install [Graphviz](https://graphviz.org/download/) - open source graph visualization software.
+To run examples, you must install [Python 3.10](https://www.python.org/downloads/release/python-31012/) and [Graphviz](https://graphviz.org/download/) - open source graph visualization software.
 
 After that install requirements:
 ```
