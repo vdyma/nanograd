@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "69f85e4d1bb859df95819703b4f24992e75bf88cff92f37e788cb909f6e70158"
+            "sha256": "12a3e874ce726f4ee962513c2e0bc7d7ea3e1e7cc63f61422fc214c8977935b5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -124,6 +124,9 @@
             "version": "==4.12.2"
         },
         "black": {
+            "extras": [
+                "jupyter"
+            ],
             "hashes": [
                 "sha256:064101748afa12ad2291c2b91c960be28b817c0c7eaa35bec09cc63aa56493c5",
                 "sha256:0945e13506be58bf7db93ee5853243eb368ace1c08a24c65ce108986eac65915",
@@ -1050,6 +1053,13 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==1.2.1"
+        },
+        "tokenize-rt": {
+            "hashes": [
+                "sha256:3160bc0c3e8491312d0485171dea861fc160a240f5f5766b72a1165408d10740",
+                "sha256:c67772c662c6b3dc65edf66808577968fb10badfc2042e3027196bed4daf9e5a"
+            ],
+            "version": "==5.0.0"
         },
         "tomli": {
             "hashes": [

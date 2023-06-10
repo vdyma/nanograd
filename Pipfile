@@ -8,7 +8,7 @@ graphviz = "*"
 
 [dev-packages]
 jupyterlab = "*"
-black = "*"
+black = {extras = ["jupyter"], version = "*"}
 
 [requires]
 python_version = "3.10"
