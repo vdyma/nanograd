@@ -30,3 +30,28 @@ Run Jupyter with and that's it!
 jupyter-lab
 ```
 Now you're ready to explore nanoGrad!
+
+## Example
+This is how you can create and manipulate values. Values accept floats or ints as data and can be assigned a label.
+```
+a = Value(2.0, label="a")
+b = Value(4.0, label="b")
+c = a * b
+c.label = "c"
+d = Value(3.0, label="d")
+e = c + d
+e.label = "e"
+e
+```
+
+You can take derivatives of a value with respect to another value.
+```
+e.backward()
+e.grad
+```
+
+Visualize the computation graph.
+```
+e.visualize()
+```
+![img](/images/example_graph.svg)
