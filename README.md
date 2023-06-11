@@ -17,23 +17,23 @@ You can go throuhg short Jupyter Notebbok `docs/example.ipynb` that covers basic
 To run examples, you must install [Python 3.10](https://www.python.org/downloads/release/python-31012/) and [Graphviz](https://graphviz.org/download/) - open source graph visualization software.
 
 After that install requirements:
-```
+```shell
 pip install -r ./requirements.txt
 ```
 Alternatively, you can use `pipenv` for environment management:
-```
+```shell
 pipenv install
 ```
 
-Run Jupyter with and that's it!
-```
+Run Jupyter with the following command and that's it!
+```shell
 jupyter-lab
 ```
 Now you're ready to explore nanoGrad!
 
 ## Example
 This is how you can create and manipulate values. Values accept floats or ints as data and can be assigned a label.
-```
+```python
 a = Value(2.0, label="a")
 b = Value(4.0, label="b")
 c = a * b
@@ -45,13 +45,13 @@ e
 ```
 
 You can take derivatives of a value with respect to another value.
-```
+```python
 e.backward()
 e.grad
 ```
 
 Visualize the computation graph.
-```
+```python
 e.visualize()
 ```
 ![img](/images/example_graph.svg)
