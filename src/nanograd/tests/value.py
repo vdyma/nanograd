@@ -8,11 +8,11 @@ from src.nanograd.value import Value
 
 class TestValue(unittest.TestCase):
     def test_init(self):
-        x = Value(2, [], "-", "x")
+        x = Value(2, (), "-", "x")
         self.assertEqual(x.data, 2)
         self.assertEqual(x.grad, 0)
-        self.assertEqual(len(x.children), 0)
-        self.assertEqual(x.operation, "-")
+        self.assertEqual(len(x._prev), 0)
+        self.assertEqual(x._op, "-")
         self.assertEqual(x.label, "x")
 
     def test_mul_pos(self):
@@ -204,12 +204,6 @@ class TestValue(unittest.TestCase):
         expected_gradeint = 0.25
         self.assertAlmostEqual(expected_data, y.data, 2)
         self.assertAlmostEqual(expected_gradeint, x.grad, 2)
-
-    def test_visualization(self):
-        x = Value(2)
-        y = x.sigmoid()
-        y.backward()
-        y.visualize()
 
 
 if __name__ == "__main__":
