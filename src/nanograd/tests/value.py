@@ -116,6 +116,15 @@ class TestValue(unittest.TestCase):
         self.assertAlmostEqual(expected_data, y.data, 2)
         self.assertAlmostEqual(expected_gradient, x.grad, 2)
 
+    def test_log_pos_base(self):
+        x = Value(2)
+        y = x.log(10)
+        y.backward()
+        expected_data = 0.301
+        expected_gradient = 0.217
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
     def test_tanh_pos(self):
         x = Value(2)
         y = x.tanh()
@@ -204,6 +213,87 @@ class TestValue(unittest.TestCase):
         expected_gradeint = 0.25
         self.assertAlmostEqual(expected_data, y.data, 2)
         self.assertAlmostEqual(expected_gradeint, x.grad, 2)
+
+    def test_rpow(self):
+        x = Value(2)
+        y = 3**x
+        y.backward()
+        expected_data = 9
+        expected_gradient = 9.887
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_rpow_zero(self):
+        x = Value(0)
+        y = 3**x
+        y.backward()
+        expected_data = 1
+        expected_gradient = 1.098
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_rpow_neg(self):
+        x = Value(-2)
+        y = 3**x
+        y.backward()
+        expected_data = 0.111
+        expected_gradient = 0.122
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_cos_pos(self):
+        x = Value(2)
+        y = x.cos()
+        y.backward()
+        expected_data = -0.416
+        expected_gradient = -0.909
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_cos_zero(self):
+        x = Value(0)
+        y = x.cos()
+        y.backward()
+        expected_data = 1
+        expected_gradient = 0
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_cos_neg(self):
+        x = Value(-2)
+        y = x.cos()
+        y.backward()
+        expected_data = -0.416
+        expected_gradient = 0.909
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_sin_pos(self):
+        x = Value(2)
+        y = x.sin()
+        y.backward()
+        expected_data = 0.909
+        expected_gradient = -0.416
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_sin_zero(self):
+        x = Value(0)
+        y = x.sin()
+        y.backward()
+        expected_data = 0
+        expected_gradient = 1
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
+
+    def test_sin_neg(self):
+        x = Value(-2)
+        y = x.sin()
+        y.backward()
+        expected_data = -0.909
+        expected_gradient = -0.416
+        self.assertAlmostEqual(expected_data, y.data, 2)
+        self.assertAlmostEqual(expected_gradient, x.grad, 2)
 
     def test_visualization(self):
         x = Value(2)

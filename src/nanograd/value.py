@@ -156,7 +156,7 @@ class Value(ValueInterface):
         out._backward = _backward
         return out
 
-    def log(self, base: float | int) -> Value:
+    def log(self, base: float | int = math.e) -> Value:
         assert self.data > 0, "Logarithm of negative number is undefined"
         assert base > 0, "Logarithm base must be positive"
         assert base != 1, "Logarithm base cannot be 1"
