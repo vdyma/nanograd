@@ -104,6 +104,18 @@ class Value(ValueInterface):
         out._backward = _backward
         return out
 
+    def __rpow__(self, other: float | int) -> Value:
+        assert isinstance(other, (float, int)), "Exponent must be a scalar"
+        out = Value(
+            other**self.data, (self,), f"{other}**", f"({other} ** {self.label})"
+        )
+
+        def _backward():
+            self.grad += (other**self.data) * math.log(other) * out.grad
+
+        out._backward = _backward
+        return out
+
     def tanh(self) -> Value:
         x = self.data
         t = (math.exp(2 * x) - 1) / (math.exp(2 * x) + 1)
@@ -144,18 +156,41 @@ class Value(ValueInterface):
         out._backward = _backward
         return out
 
-    def log(self) -> Value:
+    def log(self, base: float | int) -> Value:
         assert self.data > 0, "Logarithm of negative number is undefined"
-        out = Value(math.log(self.data), (self,), "log", f"log({self.label})")
+        assert base > 0, "Logarithm base must be positive"
+        assert base != 1, "Logarithm base cannot be 1"
+        assert isinstance(base, (float, int)), "Logarithm base must be a scalar"
+        out = Value(math.log(self.data, base), (self,), "log", f"log({self.label})")
 
         def _backward():
-            self.grad += (1 / self.data) * out.grad
+            self.grad += (
+                1 / ((self.data * math.log(base)) if base != math.e else self.data)
+            ) * out.grad
 
         out._backward = _backward
         return out
 
     def linear(self) -> Value:
         return self
+
+    def cos(self) -> Value:
+        out = Value(math.cos(self.data), (self,), "cos", f"cos({self.label})")
+
+        def _backward():
+            self.grad += -math.sin(self.data) * out.grad
+
+        out._backward = _backward
+        return out
+
+    def sin(self) -> Value:
+        out = Value(math.sin(self.data), (self,), "sin", f"sin({self.label})")
+
+        def _backward():
+            self.grad += math.cos(self.data) * out.grad
+
+        out._backward = _backward
+        return out
 
     def backward(self) -> None:
         topo = []
