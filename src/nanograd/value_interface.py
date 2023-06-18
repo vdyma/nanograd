@@ -1,5 +1,4 @@
 # Abstract class for value interface
-# Written with GitHub Copilot
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -10,7 +9,9 @@ class ValueInterface(ABC):
     def __init__(
         self,
         data: float | int,
-        children: tuple[ValueInterface] = (),
+        children: tuple[ValueInterface, ValueInterface]
+        | tuple[ValueInterface]
+        | tuple[()] = (),
         operator: str = "",
         label: str = "",
     ):

@@ -1,9 +1,7 @@
 from __future__ import annotations
-
 import math
 
 from src.nanograd.value_interface import ValueInterface
-
 from src.nanograd.visualize import draw_dot
 
 
@@ -19,7 +17,7 @@ class Value(ValueInterface):
     def __init__(
         self,
         data: float | int,
-        children: tuple[Value] = (),
+        children: tuple[Value, Value] | tuple[Value] | tuple[()] = (),
         operator: str = "",
         label: str = "",
     ):
